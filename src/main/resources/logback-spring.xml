@@ -12,7 +12,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <!--过滤trace日志到控制台-->
         <filter class="com.plumelog.logback.util.FilterSyncLogger">
-            <level></level>
+            <level/>
         </filter>
         <encoder>
             <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
@@ -32,18 +32,13 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-    <!-- 环境配置 -->
-    <springProperty scope="context" name="plumelog.appName" source="CloudStorage"/>
-    <springProperty scope="context" name="plumelog.redisHost" source="127.0.0.1"/>
-    <springProperty scope="context" name="plumelog.redisPort" source="6379"/>
-    <springProperty scope="context" name="plumelog.redisAuth" source="Zhouwenjian:2871"/>
-    <springProperty scope="context" name="plumelog.env" source="true"/>
     <!-- 输出plumelog -->
     <appender name="plumelog" class="com.plumelog.logback.appender.RedisAppender">
-        <appName>${plumelog.appName}</appName>
-        <redisHost>${plumelog.redisHost}</redisHost>
-        <redisAuth>${plumelog.redisAuth}</redisAuth>
-        <env>${plumelog.env}</env>
+        <appName>CloudStorage</appName>
+        <redisHost>192.168.5.254:6379</redisHost>
+        <redisAuth>Zhouwenjian:2871</redisAuth>
+        <redisDb>0</redisDb>
+        <env>true</env>
     </appender>
     <!-- 配置日志输出，只输出info，只保留控制台和plumelog输出-->
     <!-- 正常开发环境本地，只输出到控制台，测试环境只输出到plumelog,生产环境输出到本地文件plumelog,因为有plumelog加持本地文件就保留3天即可-->

@@ -1,8 +1,11 @@
-package com.silvericekey.cloudstorage.startup;
+package com.silvericekey.cloudstorage;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author SilverIceKey
+ */
 @SpringBootApplication
 public class CloudStorageApplication {
 
