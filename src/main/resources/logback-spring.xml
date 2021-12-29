@@ -35,7 +35,7 @@
     <!-- 输出plumelog -->
     <appender name="plumelog" class="com.plumelog.logback.appender.RedisAppender">
         <appName>CloudStorage</appName>
-        <redisHost>192.168.5.254:6379</redisHost>
+        <redisHost>www.zheqianfz.top:6379</redisHost>
         <redisAuth>Zhouwenjian:2871</redisAuth>
         <redisDb>0</redisDb>
         <env>true</env>
