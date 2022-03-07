@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController()
 @RequestMapping("/user")
 public class LoginController {
-    @Autowired
+    @Autowired(required = false)
     private UserMapper userMapper;
 
     /**
@@ -37,15 +37,21 @@ public class LoginController {
         QueryWrapper<User> userWrapper = new QueryWrapper<>();
         userWrapper.eq("username", userVo.getUsername());
         User user = userMapper.selectOne(userWrapper);
-        if (user==null){
+        if (user == null) {
             return RestUtil.error("账号不存在");
-        }else if (!user.getPassword().equals(MD5.create().digestHex(userVo.getPassword()))){
+        } else if (!user.getPassword().equals(MD5.create().digestHex(userVo.getPassword()))) {
             return RestUtil.error("账号或密码错误");
-        }else {
-            return RestUtil.ok();
+        } else {
+            return RestUtil.ok("登录成功");
         }
     }
 
+    /**
+     * 注册
+     *
+     * @param registerVo
+     * @return
+     */
     @PostMapping(path = "/register")
     public RestReponse register(@RequestBody RegisterVo registerVo) {
         User user = new User();
@@ -54,12 +60,31 @@ public class LoginController {
         user.setPhone(registerVo.getPhone());
         QueryWrapper<User> userWrapper = new QueryWrapper<>();
         userWrapper.eq("username", registerVo.getUsername());
-        boolean isInsert = userMapper.selectOne(userWrapper)!=null;
+        boolean isInsert = userMapper.selectOne(userWrapper) != null;
         if (!isInsert) {
             userMapper.insert(user);
-            return RestUtil.ok();
+            return RestUtil.ok("注册成功");
         } else {
             return RestUtil.error("注册失败,该账号已存在");
+        }
+    }
+
+    /**
+     * 修改密码
+     * @param userVo
+     * @return
+     */
+    @PostMapping(path = "/changepassword")
+    public RestReponse changePassword(@RequestBody UserVo userVo) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("username", userVo.getUsername());
+        User user = userMapper.selectOne(userQueryWrapper);
+        if (user == null) {
+            return RestUtil.error("用户不存在，请重新输入");
+        } else {
+            user.setPassword(MD5.create().digestHex(userVo.getPassword()));
+            userMapper.updateById(user);
+            return RestUtil.ok("修改密码成功");
         }
     }
 }
