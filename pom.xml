@@ -80,6 +80,7 @@
 
     <build>
         <finalName>CloudStorage</finalName>
+        <defaultGoal>compare</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
