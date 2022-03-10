@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>CloudStorage</name>
     <description>CloudStorage</description>
+    <packaging>jar</packaging>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -78,6 +79,7 @@
     </dependencies>
 
     <build>
+        <finalName>CloudStorage</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
