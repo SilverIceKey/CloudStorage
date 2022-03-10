@@ -80,7 +80,7 @@
 
     <build>
         <finalName>CloudStorage</finalName>
-        <defaultGoal>compile</defaultGoal>
+        <defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
