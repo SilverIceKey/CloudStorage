@@ -14,4 +14,9 @@ public class ErrorCode {
      * 通用错误返回
      */
     public static final int COMMON_ERROR = 199;
+
+    /**
+     * TOEKN错误
+     */
+    public static final int TOKEN_ERROR = 198;
 }

@@ -1,12 +1,14 @@
-package com.silvericekey.cloudstorage.control;
+package com.silvericekey.cloudstorage.controller;
 
 import cn.hutool.crypto.digest.MD5;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.silvericekey.cloudstorage.dao.mapper.UserMapper;
 import com.silvericekey.cloudstorage.entity.User;
+import com.silvericekey.cloudstorage.model.LoginResponse;
 import com.silvericekey.cloudstorage.model.RegisterVo;
 import com.silvericekey.cloudstorage.model.RestReponse;
 import com.silvericekey.cloudstorage.model.UserVo;
+import com.silvericekey.cloudstorage.util.JWTPackageUtil;
 import com.silvericekey.cloudstorage.util.RestUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController()
 @RequestMapping("/user")
 public class LoginController {
-    @Autowired(required = false)
+    @Autowired
     private UserMapper userMapper;
 
     /**
@@ -42,7 +44,9 @@ public class LoginController {
         } else if (!user.getPassword().equals(MD5.create().digestHex(userVo.getPassword()))) {
             return RestUtil.error("账号或密码错误");
         } else {
-            return RestUtil.ok("登录成功");
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setToken(JWTPackageUtil.createJWT(user));
+            return RestUtil.ok("登录成功",loginResponse);
         }
     }
 
@@ -71,10 +75,11 @@ public class LoginController {
 
     /**
      * 修改密码
+     *
      * @param userVo
      * @return
      */
-    @PostMapping(path = "/changepassword")
+    @PostMapping(path = "/changePassword")
     public RestReponse changePassword(@RequestBody UserVo userVo) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("username", userVo.getUsername());
