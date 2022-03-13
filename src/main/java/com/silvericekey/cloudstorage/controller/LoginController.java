@@ -2,11 +2,13 @@ package com.silvericekey.cloudstorage.controller;
 
 import cn.hutool.crypto.digest.MD5;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.silvericekey.cloudstorage.dao.mapper.FolderInfoMapper;
 import com.silvericekey.cloudstorage.dao.mapper.UserMapper;
+import com.silvericekey.cloudstorage.entity.FolderInfo;
 import com.silvericekey.cloudstorage.entity.User;
 import com.silvericekey.cloudstorage.model.LoginResponse;
 import com.silvericekey.cloudstorage.model.RegisterVo;
-import com.silvericekey.cloudstorage.model.RestReponse;
+import com.silvericekey.cloudstorage.model.RestResponse;
 import com.silvericekey.cloudstorage.model.UserVo;
 import com.silvericekey.cloudstorage.util.JWTPackageUtil;
 import com.silvericekey.cloudstorage.util.RestUtil;
@@ -24,9 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController()
 @RequestMapping("/user")
-public class LoginController {
+public class LoginController extends BaseController {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private FolderInfoMapper folderInfoMapper;
 
     /**
      * 登录
@@ -35,7 +40,7 @@ public class LoginController {
      * @return
      */
     @PostMapping(path = "/login")
-    public RestReponse login(@RequestBody UserVo userVo) {
+    public RestResponse login(@RequestBody UserVo userVo) {
         QueryWrapper<User> userWrapper = new QueryWrapper<>();
         userWrapper.eq("username", userVo.getUsername());
         User user = userMapper.selectOne(userWrapper);
@@ -46,7 +51,7 @@ public class LoginController {
         } else {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setToken(JWTPackageUtil.createJWT(user));
-            return RestUtil.ok("登录成功",loginResponse);
+            return RestUtil.ok("登录成功", loginResponse);
         }
     }
 
@@ -57,7 +62,7 @@ public class LoginController {
      * @return
      */
     @PostMapping(path = "/register")
-    public RestReponse register(@RequestBody RegisterVo registerVo) {
+    public RestResponse register(@RequestBody RegisterVo registerVo) {
         User user = new User();
         user.setUsername(registerVo.getUsername());
         user.setPassword(MD5.create().digestHex(registerVo.getPassword()));
@@ -67,6 +72,12 @@ public class LoginController {
         boolean isInsert = userMapper.selectOne(userWrapper) != null;
         if (!isInsert) {
             userMapper.insert(user);
+            User insertUser = userMapper.selectOne(userWrapper);
+            FolderInfo folderInfo = new FolderInfo();
+            folderInfo.setFolderName("/");
+            folderInfo.setFolderParentId(0L);
+            folderInfo.setUserId(insertUser.getId());
+            folderInfoMapper.insert(folderInfo);
             return RestUtil.ok("注册成功");
         } else {
             return RestUtil.error("注册失败,该账号已存在");
@@ -80,7 +91,7 @@ public class LoginController {
      * @return
      */
     @PostMapping(path = "/changePassword")
-    public RestReponse changePassword(@RequestBody UserVo userVo) {
+    public RestResponse changePassword(@RequestBody UserVo userVo) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("username", userVo.getUsername());
         User user = userMapper.selectOne(userQueryWrapper);

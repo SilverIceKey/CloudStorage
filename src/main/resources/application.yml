@@ -6,6 +6,10 @@ spring:
     url: jdbc:mysql://192.168.5.254:3306/cloudstorage
     username: cloudstorage
     password: CloudStorage:2871
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
 logging:
   level:
     com.silvericekey.cloudstorage: debug

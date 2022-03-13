@@ -1,7 +1,7 @@
 package com.silvericekey.cloudstorage.util;
 
 import com.silvericekey.cloudstorage.common.ErrorCode;
-import com.silvericekey.cloudstorage.model.RestReponse;
+import com.silvericekey.cloudstorage.model.RestResponse;
 
 /**
  * @author SilverIceKey
@@ -14,7 +14,7 @@ public class RestUtil {
      *
      * @return
      */
-    public static RestReponse ok() {
+    public static RestResponse ok() {
         return ok(null,null);
     }
 
@@ -24,7 +24,7 @@ public class RestUtil {
      * @param msg
      * @return
      */
-    public static RestReponse ok(String msg) {
+    public static RestResponse ok(String msg) {
         return ok(msg,null);
     }
 
@@ -34,8 +34,8 @@ public class RestUtil {
      * @param data
      * @return
      */
-    public static RestReponse ok(Object data) {
-        return ok(null,data);
+    public static RestResponse ok(Object data) {
+        return ok("获取成功",data);
     }
 
     /**
@@ -43,8 +43,8 @@ public class RestUtil {
      * @param msg
      * @return
      */
-    public static RestReponse ok(String msg, Object data) {
-        RestReponse restReponse = new RestReponse();
+    public static RestResponse ok(String msg, Object data) {
+        RestResponse restReponse = new RestResponse();
         restReponse.setCode(ErrorCode.OK);
         restReponse.setMsg(msg);
         restReponse.setData(data);
@@ -57,8 +57,8 @@ public class RestUtil {
      *
      * @return
      */
-    public static RestReponse error() {
-        RestReponse restReponse = new RestReponse();
+    public static RestResponse error() {
+        RestResponse restReponse = new RestResponse();
         restReponse.setCode(ErrorCode.COMMON_ERROR);
         restReponse.setMsg("数据处理异常");
         return restReponse;
@@ -69,8 +69,8 @@ public class RestUtil {
      *
      * @return
      */
-    public static RestReponse error(String msg) {
-        RestReponse restReponse = new RestReponse();
+    public static RestResponse error(String msg) {
+        RestResponse restReponse = new RestResponse();
         restReponse.setCode(ErrorCode.COMMON_ERROR);
         restReponse.setMsg(msg);
         return restReponse;
@@ -83,8 +83,8 @@ public class RestUtil {
      * @param msg
      * @return
      */
-    public static RestReponse error(int code, String msg) {
-        RestReponse restReponse = new RestReponse();
+    public static RestResponse error(int code, String msg) {
+        RestResponse restReponse = new RestResponse();
         restReponse.setCode(code);
         restReponse.setMsg(msg);
         return restReponse;

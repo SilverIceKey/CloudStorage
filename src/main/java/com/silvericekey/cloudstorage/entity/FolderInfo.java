@@ -6,46 +6,32 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 文件信息
+ * 文件夹信息
  */
 @Data
-@TableName("file_info")
-public class FileInfo {
-
+@TableName("folder_info")
+public class FolderInfo {
     /**
-     * id
+     * 主键id
      */
     @TableId(type = IdType.AUTO)
     private Long id;
-
     /**
-     * 文件名称
+     * 文件夹名称
      */
-    @TableField("filename")
-    private String fileName;
-
+    @TableField("folder_name")
+    private String folderName;
     /**
-     * 文件路径
+     * 父文件夹id
      */
-    @TableField("filepath")
-    private String filePath;
-
-    /**
-     * 文件md5
-     */
-    @TableField("filemd5")
-    private String fileMD5;
-    /**
-     * 文件夹id
-     */
-    @TableField("folder_id")
-    private Long folder_id;
-
+    @TableField("folder_parent_id")
+    private Long folderParentId;
     /**
      * 用户id
      */
     @TableField("user_id")
     private Long userId;
+
 
     /**
      * 创建时间

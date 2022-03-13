@@ -8,7 +8,7 @@ import lombok.Data;
  * @date 2021/12/2817:04
  */
 @Data
-public class RestReponse {
+public class RestResponse {
     /**
      * 错误码
      */

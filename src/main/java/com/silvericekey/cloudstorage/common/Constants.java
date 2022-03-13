@@ -13,11 +13,11 @@ public class Constants {
     /**
      * token过期时间
      */
-    public static final int TOKEN_EXP = 1000 * 60 * 60;
+    public static final int TOKEN_EXP = 1000 * 60 * 60 * 24;
 
     /**
      * 文件保存路径
      */
-    public static final String FILE_SAVE_PATH = "";
+    public static final String FILE_SAVE_PATH = "./upload/";
 
 }

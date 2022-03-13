@@ -49,4 +49,14 @@ public class JWTPackageUtil {
         JWT jwt = JWTUtil.parseToken(token);
         return jwt.setKey(Constants.ENCRYPTKEY.getBytes(StandardCharsets.UTF_8)).verify();
     }
+
+    /**
+     * 从jwt获取用户id
+     * @param token
+     * @return
+     */
+    public static String fromJwtGetUserId(String token){
+        JWT jwt = JWTUtil.parseToken(token);
+        return jwt.getPayload("userId").toString();
+    }
 }
