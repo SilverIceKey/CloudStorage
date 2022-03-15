@@ -29,6 +29,9 @@ public class FileController extends BaseController {
     @GetMapping(path = "/getList")
     public RestResponse getFileList(@RequestBody FileListVo fileListVo) {
         fileListVo.setUserId(getUser().getId());
+        if (fileListVo.getFolderId()==null){
+            fileListVo.setFolderId(0);
+        }
         return fileService.getFileList(fileListVo);
     }
 

@@ -10,7 +10,7 @@ public class FileListVo {
     /**
      * 文件夹id
      */
-    private Integer folderId = 0;
+    private Integer folderId;
 
     /**
      * 用户id
