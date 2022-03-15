@@ -29,7 +29,7 @@ public class FileController extends BaseController {
     @GetMapping(path = "/getList")
     public RestResponse getFileList(@RequestBody FileListVo fileListVo) {
         fileListVo.setUserId(getUser().getId());
-        if (fileListVo.getFolderId()==null){
+        if (fileListVo.getFolderId() == null) {
             fileListVo.setFolderId(0L);
         }
         return fileService.getFileList(fileListVo);
@@ -43,10 +43,11 @@ public class FileController extends BaseController {
      * @return
      * @throws IOException
      */
-    @PostMapping(path = "/uploadFile",consumes = {"multipart/form-data"})
-    public RestResponse uploadFile(@RequestPart("filemd5") String filemd5,
-                                   @RequestPart("folderId") Long folderId,
-                                   @RequestPart(value = "file",required = false) MultipartFile multipartFile) throws IOException {
+    @PostMapping(path = "/uploadFile", consumes = {"multipart/form-data"})
+    public RestResponse uploadFile(@RequestPart(value = "file") MultipartFile multipartFile,
+                                   @RequestPart("filemd5") String filemd5,
+                                   @RequestPart("folderId") Long folderId
+    ) throws IOException {
         FileUploadVo fileUploadVo = new FileUploadVo();
         fileUploadVo.setFileMD5(filemd5);
         fileUploadVo.setFolderId(folderId);
