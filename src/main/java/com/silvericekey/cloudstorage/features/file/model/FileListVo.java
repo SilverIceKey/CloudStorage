@@ -10,10 +10,10 @@ public class FileListVo {
     /**
      * 文件夹id
      */
-    private Integer folderId;
+    private Long folderId;
 
     /**
      * 用户id
      */
-    private Integer userId;
+    private Long userId;
 }

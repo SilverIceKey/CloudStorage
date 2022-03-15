@@ -19,5 +19,5 @@ public class CreateFolderVo {
     /**
      * 用户id
      */
-    private Integer userId;
+    private Long userId;
 }

@@ -30,7 +30,7 @@ public class FileController extends BaseController {
     public RestResponse getFileList(@RequestBody FileListVo fileListVo) {
         fileListVo.setUserId(getUser().getId());
         if (fileListVo.getFolderId()==null){
-            fileListVo.setFolderId(0);
+            fileListVo.setFolderId(0L);
         }
         return fileService.getFileList(fileListVo);
     }
@@ -45,7 +45,7 @@ public class FileController extends BaseController {
      */
     @PostMapping("/uploadFile")
     public RestResponse uploadFile(@RequestPart("filemd5") String filemd5,
-                                   @RequestPart("folderId") Integer folderId,
+                                   @RequestPart("folderId") Long folderId,
                                    @RequestPart("file") MultipartFile multipartFile) throws IOException {
         FileUploadVo fileUploadVo = new FileUploadVo();
         fileUploadVo.setFileMD5(filemd5);

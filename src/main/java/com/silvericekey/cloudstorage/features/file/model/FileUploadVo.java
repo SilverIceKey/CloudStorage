@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class FileUploadVo {
     private String fileMD5;
-    private Integer folderId;
-    private Integer userId;
+    private Long folderId;
+    private Long userId;
     private MultipartFile multipartFile;
 }
