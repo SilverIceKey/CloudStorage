@@ -46,7 +46,7 @@ public class FileController extends BaseController {
     @PostMapping("/uploadFile")
     public RestResponse uploadFile(@RequestPart("filemd5") String filemd5,
                                    @RequestPart("folderId") Long folderId,
-                                   @RequestPart("file") MultipartFile multipartFile) throws IOException {
+                                   @RequestParam(value = "file",required = false) MultipartFile multipartFile) throws IOException {
         FileUploadVo fileUploadVo = new FileUploadVo();
         fileUploadVo.setFileMD5(filemd5);
         fileUploadVo.setFolderId(folderId);
