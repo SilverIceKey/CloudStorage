@@ -39,11 +39,12 @@ public class FileController extends BaseController {
      * 文件上传，通过判断md5避免重复文件
      *
      * @param filemd5
+     * @param folderId
      * @param multipartFile
      * @return
      * @throws IOException
      */
-    @PostMapping(path = "/uploadFile", consumes = {"multipart/form-data"})
+    @PostMapping(path = "/uploadFile")
     public RestResponse uploadFile(@RequestPart(value = "file") MultipartFile multipartFile,
                                    @RequestPart("filemd5") String filemd5,
                                    @RequestPart("folderId") Long folderId
