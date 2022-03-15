@@ -6,7 +6,7 @@ import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
 import cn.hutool.jwt.JWTUtil;
 import com.silvericekey.cloudstorage.common.Constants;
-import com.silvericekey.cloudstorage.features.user.entity.User;
+import com.silvericekey.cloudstorage.features.user.entity.UserInfo;
 import jodd.util.StringUtil;
 
 import java.nio.charset.StandardCharsets;
@@ -22,7 +22,7 @@ public class JWTPackageUtil {
      * @param user
      * @return
      */
-    public static String createJWT(User user){
+    public static String createJWT(UserInfo user){
         DateTime now = DateTime.now();
         DateTime ExpTime = now.offset(DateField.MILLISECOND, Constants.TOKEN_EXP);
         Map<String,Object> payload = new HashMap<>();

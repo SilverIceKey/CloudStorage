@@ -36,12 +36,12 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
     @Override
     public RestResponse getFileList(FileListVo fileListVo) {
         QueryWrapper<FileInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id", fileListVo.getUserId());
-        queryWrapper.eq("folder_id", fileListVo.getFolderId());
+        queryWrapper.eq(FileInfo.USER_ID, fileListVo.getUserId());
+        queryWrapper.eq(FileInfo.FOLDER_ID, fileListVo.getFolderId());
         List<FileInfo> fileInfoList = getBaseMapper().selectList(queryWrapper);
         fileInfoList.forEach(fileInfo -> fileInfo.setFileSizeStr(FileCalcUtil.calcFileSize(fileInfo.getFileSize())));
         QueryWrapper<FolderInfo> folderInfoQueryWrapper = new QueryWrapper<>();
-        folderInfoQueryWrapper.eq("folder_parent_id", fileListVo.getFolderId());
+        folderInfoQueryWrapper.eq(FolderInfo.FOLDER_PARENT_ID, fileListVo.getFolderId());
         List<FolderInfo> folderInfos = folderService.getBaseMapper().selectList(folderInfoQueryWrapper);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("fileList", fileInfoList);

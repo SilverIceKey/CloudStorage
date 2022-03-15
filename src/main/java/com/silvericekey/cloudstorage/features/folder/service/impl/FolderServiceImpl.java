@@ -21,9 +21,9 @@ public class FolderServiceImpl extends ServiceImpl<FolderInfoMapper, FolderInfo>
     @Override
     public RestResponse createFolder(CreateFolderVo createFolderVo) {
         QueryWrapper<FolderInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("folder_name", createFolderVo.getFolderName())
-                .eq("folder_parent_id", createFolderVo.getFolderParentId())
-                .eq("user_id", createFolderVo.getUserId());
+        queryWrapper.eq(FolderInfo.FOLDER_NAME, createFolderVo.getFolderName())
+                .eq(FolderInfo.FOLDER_PARENT_ID, createFolderVo.getFolderParentId())
+                .eq(FolderInfo.USER_ID, createFolderVo.getUserId());
         FolderInfo folderInfo = getBaseMapper().selectOne(queryWrapper);
         if (folderInfo != null) {
             return RestUtil.error("文件夹已存在");

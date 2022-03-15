@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("cs_user")
-public class User {
+public class UserInfo {
     /**
      * 主键id
      */

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.silvericekey.cloudstorage.base.RestResponse;
 import com.silvericekey.cloudstorage.features.folder.entity.FolderInfo;
 import com.silvericekey.cloudstorage.features.folder.service.FolderService;
-import com.silvericekey.cloudstorage.features.user.entity.User;
+import com.silvericekey.cloudstorage.features.user.entity.UserInfo;
 import com.silvericekey.cloudstorage.features.user.mapper.UserMapper;
 import com.silvericekey.cloudstorage.features.user.model.LoginResponse;
 import com.silvericekey.cloudstorage.features.user.model.RegisterVo;
@@ -24,14 +24,14 @@ import org.springframework.stereotype.Service;
  */
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, UserInfo> implements UserService {
     private final FolderService folderService;
 
     @Override
     public RestResponse login(UserVo userVo) {
-        QueryWrapper<User> userWrapper = new QueryWrapper<>();
-        userWrapper.eq("username", userVo.getUsername());
-        User user = getBaseMapper().selectOne(userWrapper);
+        QueryWrapper<UserInfo> userWrapper = new QueryWrapper<>();
+        userWrapper.eq(UserInfo.USERNAME, userVo.getUsername());
+        UserInfo user = getBaseMapper().selectOne(userWrapper);
         if (user == null) {
             return RestUtil.error("账号不存在");
         } else if (!user.getPassword().equals(MD5.create().digestHex(userVo.getPassword()))) {
@@ -45,16 +45,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public RestResponse register(RegisterVo registerVo) {
-        User user = new User();
+        UserInfo user = new UserInfo();
         user.setUsername(registerVo.getUsername());
         user.setPassword(MD5.create().digestHex(registerVo.getPassword()));
         user.setPhone(registerVo.getPhone());
-        QueryWrapper<User> userWrapper = new QueryWrapper<>();
-        userWrapper.eq("username", registerVo.getUsername());
+        QueryWrapper<UserInfo> userWrapper = new QueryWrapper<>();
+        userWrapper.eq(UserInfo.USERNAME, registerVo.getUsername());
         boolean isInsert = getBaseMapper().selectOne(userWrapper) != null;
         if (!isInsert) {
             getBaseMapper().insert(user);
-            User insertUser = getBaseMapper().selectOne(userWrapper);
+            UserInfo insertUser = getBaseMapper().selectOne(userWrapper);
             FolderInfo folderInfo = new FolderInfo();
             folderInfo.setFolderName("/");
             folderInfo.setFolderParentId(0L);
@@ -68,9 +68,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public RestResponse changePassword(UserVo userVo) {
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("username", userVo.getUsername());
-        User user = getBaseMapper().selectOne(userQueryWrapper);
+        QueryWrapper<UserInfo> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq(UserInfo.USERNAME, userVo.getUsername());
+        UserInfo user = getBaseMapper().selectOne(userQueryWrapper);
         if (user == null) {
             return RestUtil.error("用户不存在，请重新输入");
         } else {

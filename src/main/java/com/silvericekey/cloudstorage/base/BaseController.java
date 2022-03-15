@@ -1,7 +1,7 @@
 package com.silvericekey.cloudstorage.base;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.silvericekey.cloudstorage.features.user.entity.User;
+import com.silvericekey.cloudstorage.features.user.entity.UserInfo;
 import com.silvericekey.cloudstorage.features.user.service.UserService;
 import com.silvericekey.cloudstorage.util.JWTPackageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +22,11 @@ public class BaseController {
      * 获取用户信息
      * @return
      */
-    protected User getUser(){
+    protected UserInfo getUser(){
         String token = request.getHeader("Authentication");
         String userId = JWTPackageUtil.fromJwtGetUserId(token);
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",userId);
+        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(UserInfo.ID,userId);
         return userService.getBaseMapper().selectOne(queryWrapper);
     }
 }
