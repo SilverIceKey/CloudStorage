@@ -43,10 +43,10 @@ public class FileController extends BaseController {
      * @return
      * @throws IOException
      */
-    @PostMapping("/uploadFile")
+    @PostMapping(path = "/uploadFile",consumes = {"multipart/form-data"})
     public RestResponse uploadFile(@RequestPart("filemd5") String filemd5,
                                    @RequestPart("folderId") Long folderId,
-                                   @RequestParam(value = "file",required = false) MultipartFile multipartFile) throws IOException {
+                                   @RequestPart(value = "file",required = false) MultipartFile multipartFile) throws IOException {
         FileUploadVo fileUploadVo = new FileUploadVo();
         fileUploadVo.setFileMD5(filemd5);
         fileUploadVo.setFolderId(folderId);
