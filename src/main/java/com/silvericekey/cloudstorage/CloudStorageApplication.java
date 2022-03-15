@@ -9,8 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
  * @author SilverIceKey
  */
 @SpringBootApplication
-@MapperScan("com.silvericekey.cloudstorage.dao.mapper")
-@ComponentScan(basePackages = {"com.silvericekey.cloudstorage.config", "com.silvericekey.cloudstorage.controller"})
+@MapperScan("com.silvericekey.cloudstorage.features")
+@ComponentScan(basePackages = {"com.silvericekey.cloudstorage.config", "com.silvericekey.cloudstorage.features"})
 public class CloudStorageApplication {
 
     public static void main(String[] args) {

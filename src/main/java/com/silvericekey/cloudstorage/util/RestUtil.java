@@ -1,7 +1,7 @@
 package com.silvericekey.cloudstorage.util;
 
 import com.silvericekey.cloudstorage.common.ErrorCode;
-import com.silvericekey.cloudstorage.model.RestResponse;
+import com.silvericekey.cloudstorage.base.RestResponse;
 
 /**
  * @author SilverIceKey

@@ -6,7 +6,7 @@ import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
 import cn.hutool.jwt.JWTUtil;
 import com.silvericekey.cloudstorage.common.Constants;
-import com.silvericekey.cloudstorage.entity.User;
+import com.silvericekey.cloudstorage.features.user.entity.User;
 import jodd.util.StringUtil;
 
 import java.nio.charset.StandardCharsets;

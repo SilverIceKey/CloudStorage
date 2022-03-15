@@ -20,4 +20,8 @@ public class Constants {
      */
     public static final String FILE_SAVE_PATH = "./upload/";
 
+    /**
+     * 包名
+     */
+    public static final String SERVICE_PACKAGE = "com.silvericekey.cloudstorage";
 }
