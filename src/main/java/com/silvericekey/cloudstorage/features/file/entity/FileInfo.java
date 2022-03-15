@@ -26,20 +26,39 @@ public class FileInfo {
     /**
      * 文件名称
      */
-    @TableField("filename")
+    @TableField("file_name")
     private String fileName;
 
     /**
      * 文件路径
      */
-    @TableField("filepath")
+    @TableField("file_path")
     private String filePath;
 
     /**
      * 文件md5
      */
-    @TableField("filemd5")
+    @TableField("file_md5")
     private String fileMD5;
+
+    /**
+     * 文件大小
+     */
+    @TableField("file_size")
+    private Long fileSize;
+
+    /**
+     * 文件大小转为单位
+     */
+    @TableField(exist = false)
+    private String fileSizeStr;
+
+    /**
+     * 文件下载路径
+     */
+    @TableField("file_download_path")
+    private String fileDownloadPath;
+
     /**
      * 文件夹id
      */
@@ -66,17 +85,21 @@ public class FileInfo {
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String FILENAME = "filename";
+    public static final String FILE_NAME = "file_name";
 
-    private static final String FILEPATH = "filepath";
+    public static final String FILE_PATH = "file_path";
 
-    private static final String FILEMD5 = "filemd5";
+    public static final String FILE_MD5 = "file_md5";
 
-    private static final String FOLDER_ID = "folder_id";
+    public static final String FILE_SIZE = "file_size";
 
-    private static final String USER_ID = "user_id";
+    public static final String FILE_DOWNLOAD_PATH = "file_download_path";
+
+    public static final String FOLDER_ID = "folder_id";
+
+    public static final String USER_ID = "user_id";
 
     public static final String CREATE_TIME = "create_time";
 

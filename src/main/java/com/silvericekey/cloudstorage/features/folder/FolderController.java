@@ -34,6 +34,9 @@ public class FolderController extends BaseController {
      */
     @PostMapping("createFolder")
     public RestResponse createFolder(@RequestBody CreateFolderVo createFolderVo) {
+        if (!createFolderVo.getFolderName().endsWith("/")){
+            createFolderVo.setFolderName(createFolderVo.getFolderName()+"/");
+        }
         createFolderVo.setUserId(getUser().getId());
         return folderService.createFolder(createFolderVo);
     }

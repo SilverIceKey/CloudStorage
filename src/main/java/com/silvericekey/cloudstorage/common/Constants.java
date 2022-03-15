@@ -18,10 +18,15 @@ public class Constants {
     /**
      * 文件保存路径
      */
-    public static final String FILE_SAVE_PATH = "./upload/";
+    public static final String FILE_SAVE_PATH = "/mnt/Data/cloudstorage/";
 
     /**
      * 包名
      */
     public static final String SERVICE_PACKAGE = "com.silvericekey.cloudstorage";
+
+    /**
+     * 文件下载路径前缀
+     */
+    public static final String URL_PREFIX = "http://home.silvericekey.fun:32098";
 }

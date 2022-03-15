@@ -52,13 +52,13 @@ public class FolderInfo {
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    private static final String ID = "id";
+    public static final String ID = "id";
 
-    private static final String FOLDER_NAME = "folder_name";
+    public static final String FOLDER_NAME = "folder_name";
 
-    private static final String FOLDER_PARENT_ID = "folder_parent_id";
+    public static final String FOLDER_PARENT_ID = "folder_parent_id";
 
-    private static final String USER_ID = "user_id";
+    public static final String USER_ID = "user_id";
 
     public static final String CREATE_TIME = "create_time";
 
