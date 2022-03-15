@@ -1,13 +1,8 @@
-package com.silvericekey.cloudstorage.features.file;
+package com.silvericekey.cloudstorage.controller;
 
-import cn.hutool.core.io.FileUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.silvericekey.cloudstorage.base.BaseController;
-import com.silvericekey.cloudstorage.common.Constants;
 import com.silvericekey.cloudstorage.features.file.model.FileUploadVo;
-import com.silvericekey.cloudstorage.features.file.service.IFileService;
-import com.silvericekey.cloudstorage.features.file.entity.FileInfo;
-import com.silvericekey.cloudstorage.features.folder.entity.FolderInfo;
+import com.silvericekey.cloudstorage.features.file.service.FileService;
 import com.silvericekey.cloudstorage.features.file.model.FileListVo;
 import com.silvericekey.cloudstorage.base.RestResponse;
 import com.silvericekey.cloudstorage.util.RestUtil;
@@ -17,17 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
 
 @Slf4j
-@RestController
-@RequestMapping("/files")
 @RequiredArgsConstructor
+@RestController
+@RequestMapping("/file")
 public class FileController extends BaseController {
-    private final IFileService fileService;
+    private final FileService fileService;
 
     /**
      * 获取文件列表

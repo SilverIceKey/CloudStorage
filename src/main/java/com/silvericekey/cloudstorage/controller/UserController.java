@@ -1,19 +1,10 @@
-package com.silvericekey.cloudstorage.features.user;
+package com.silvericekey.cloudstorage.controller;
 
-import cn.hutool.crypto.digest.MD5;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.silvericekey.cloudstorage.base.BaseController;
-import com.silvericekey.cloudstorage.features.folder.mapper.FolderInfoMapper;
-import com.silvericekey.cloudstorage.features.folder.entity.FolderInfo;
-import com.silvericekey.cloudstorage.features.user.entity.User;
-import com.silvericekey.cloudstorage.features.user.model.LoginResponse;
 import com.silvericekey.cloudstorage.features.user.model.RegisterVo;
 import com.silvericekey.cloudstorage.base.RestResponse;
 import com.silvericekey.cloudstorage.features.user.model.UserVo;
-import com.silvericekey.cloudstorage.features.user.service.IUserService;
-import com.silvericekey.cloudstorage.features.user.service.impl.UserServiceImpl;
-import com.silvericekey.cloudstorage.util.JWTPackageUtil;
-import com.silvericekey.cloudstorage.util.RestUtil;
+import com.silvericekey.cloudstorage.features.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController extends BaseController {
-    private final IUserService userService;
+    private final UserService userService;
     /**
      * 登录
      *

@@ -9,21 +9,19 @@ import com.silvericekey.cloudstorage.features.file.entity.FileInfo;
 import com.silvericekey.cloudstorage.features.file.mapper.FileInfoMapper;
 import com.silvericekey.cloudstorage.features.file.model.FileListVo;
 import com.silvericekey.cloudstorage.features.file.model.FileUploadVo;
-import com.silvericekey.cloudstorage.features.file.service.IFileService;
+import com.silvericekey.cloudstorage.features.file.service.FileService;
 import com.silvericekey.cloudstorage.features.folder.entity.FolderInfo;
-import com.silvericekey.cloudstorage.features.folder.service.IFolderService;
+import com.silvericekey.cloudstorage.features.folder.service.FolderService;
 import com.silvericekey.cloudstorage.util.FileCalcUtil;
 import com.silvericekey.cloudstorage.util.RestUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * @author SilverIceKey
@@ -31,9 +29,10 @@ import java.util.function.Consumer;
  * @date 2022/3/1514:11
  */
 @RequiredArgsConstructor
-public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> implements IFileService {
-    private final IFolderService folderService;
-    private final IFileService fileService;
+@Service
+public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> implements FileService {
+    private final FolderService folderService;
+    private final FileService fileService;
 
     @Override
     public RestResponse getFileList(FileListVo fileListVo) {

@@ -10,6 +10,6 @@ import com.silvericekey.cloudstorage.features.folder.model.CreateFolderVo;
  * @title: FolderService
  * @date 2022/3/1513:06
  */
-public interface IFolderService extends IService<FolderInfo> {
+public interface FolderService extends IService<FolderInfo> {
     RestResponse createFolder(CreateFolderVo createFolderVo);
 }

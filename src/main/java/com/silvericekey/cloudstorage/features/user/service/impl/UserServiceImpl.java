@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.silvericekey.cloudstorage.base.RestResponse;
 import com.silvericekey.cloudstorage.features.folder.entity.FolderInfo;
-import com.silvericekey.cloudstorage.features.folder.service.IFolderService;
+import com.silvericekey.cloudstorage.features.folder.service.FolderService;
 import com.silvericekey.cloudstorage.features.user.entity.User;
 import com.silvericekey.cloudstorage.features.user.mapper.UserMapper;
 import com.silvericekey.cloudstorage.features.user.model.LoginResponse;
 import com.silvericekey.cloudstorage.features.user.model.RegisterVo;
 import com.silvericekey.cloudstorage.features.user.model.UserVo;
-import com.silvericekey.cloudstorage.features.user.service.IUserService;
+import com.silvericekey.cloudstorage.features.user.service.UserService;
 import com.silvericekey.cloudstorage.util.JWTPackageUtil;
 import com.silvericekey.cloudstorage.util.RestUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
  */
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
-    private final IFolderService folderService;
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+    private final FolderService folderService;
 
     @Override
     public RestResponse login(UserVo userVo) {

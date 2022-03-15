@@ -5,7 +5,6 @@ import com.silvericekey.cloudstorage.base.RestResponse;
 import com.silvericekey.cloudstorage.features.file.entity.FileInfo;
 import com.silvericekey.cloudstorage.features.file.model.FileListVo;
 import com.silvericekey.cloudstorage.features.file.model.FileUploadVo;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -14,7 +13,7 @@ import java.io.IOException;
  * @title: FilesService
  * @date 2022/3/1513:05
  */
-public interface IFileService extends IService<FileInfo> {
+public interface FileService extends IService<FileInfo> {
     RestResponse getFileList(FileListVo fileListVo);
 
     RestResponse uploadFile(FileUploadVo fileUploadVo) throws IOException;

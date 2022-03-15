@@ -6,15 +6,17 @@ import com.silvericekey.cloudstorage.base.RestResponse;
 import com.silvericekey.cloudstorage.features.folder.entity.FolderInfo;
 import com.silvericekey.cloudstorage.features.folder.mapper.FolderInfoMapper;
 import com.silvericekey.cloudstorage.features.folder.model.CreateFolderVo;
-import com.silvericekey.cloudstorage.features.folder.service.IFolderService;
+import com.silvericekey.cloudstorage.features.folder.service.FolderService;
 import com.silvericekey.cloudstorage.util.RestUtil;
+import org.springframework.stereotype.Service;
 
 /**
  * @author SilverIceKey
  * @title: FolderServiceImpl
  * @date 2022/3/1514:10
  */
-public class FolderServiceImpl extends ServiceImpl<FolderInfoMapper, FolderInfo> implements IFolderService {
+@Service
+public class FolderServiceImpl extends ServiceImpl<FolderInfoMapper, FolderInfo> implements FolderService {
 
     @Override
     public RestResponse createFolder(CreateFolderVo createFolderVo) {

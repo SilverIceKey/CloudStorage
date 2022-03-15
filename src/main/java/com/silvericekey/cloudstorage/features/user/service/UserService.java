@@ -11,7 +11,7 @@ import com.silvericekey.cloudstorage.features.user.model.UserVo;
  * @title: LoginService
  * @date 2022/3/1513:07
  */
-public interface IUserService extends IService<User> {
+public interface UserService extends IService<User> {
     RestResponse login(UserVo userVo);
 
     RestResponse register(RegisterVo registerVo);

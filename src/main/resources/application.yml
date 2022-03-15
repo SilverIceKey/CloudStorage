@@ -13,3 +13,5 @@ spring:
 logging:
   level:
     com.silvericekey.cloudstorage: debug
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
