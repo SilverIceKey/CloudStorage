@@ -32,7 +32,6 @@ import java.util.List;
 @Service
 public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> implements FileService {
     private final FolderService folderService;
-    private final FileService fileService;
 
     @Override
     public RestResponse getFileList(FileListVo fileListVo) {
@@ -77,7 +76,7 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
             fileInfo.setFileDownloadPath(Constants.URL_PREFIX + folderInfo.getFolderName() + fileUploadVo.getMultipartFile().getOriginalFilename());
             fileInfo.setFolderId(fileUploadVo.getFolderId());
             fileInfo.setUserId(fileUploadVo.getUserId());
-            fileService.getBaseMapper().insert(fileInfo);
+            getBaseMapper().insert(fileInfo);
             return RestUtil.ok("上传成功", fileInfo);
         }
     }
