@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("cs_user")
+@TableName("sys_user")
 public class UserInfo {
     /**
      * 主键id
      */
     @TableId(type = IdType.ASSIGN_ID)
-    private Integer id;
+    private Long id;
     /**
      * 用户名
      */

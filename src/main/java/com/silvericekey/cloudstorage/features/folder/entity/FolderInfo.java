@@ -20,7 +20,7 @@ public class FolderInfo {
      * 主键id
      */
     @TableId(type = IdType.ASSIGN_ID)
-    private Integer id;
+    private Long id;
     /**
      * 文件夹名称
      */
@@ -35,7 +35,7 @@ public class FolderInfo {
      * 用户id
      */
     @TableField("user_id")
-    private Integer userId;
+    private Long userId;
 
 
     /**

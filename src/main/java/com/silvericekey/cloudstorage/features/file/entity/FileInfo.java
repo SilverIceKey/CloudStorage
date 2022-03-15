@@ -21,7 +21,7 @@ public class FileInfo {
      * id
      */
     @TableId(type = IdType.ASSIGN_ID)
-    private Integer id;
+    private Long id;
 
     /**
      * 文件名称
@@ -63,13 +63,13 @@ public class FileInfo {
      * 文件夹id
      */
     @TableField("folder_id")
-    private Integer folderId;
+    private Long folderId;
 
     /**
      * 用户id
      */
     @TableField("user_id")
-    private Integer userId;
+    private Long userId;
 
     /**
      * 创建时间
