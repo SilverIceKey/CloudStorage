@@ -21,7 +21,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         WebMvcConfigurer.super.addInterceptors(registry);
-        registry.addInterceptor(new JWTInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/**");
+        registry.addInterceptor(new JWTInterceptor()).addPathPatterns("/**")
+                .excludePathPatterns("/user/**","/swagger-ui/**","/swagger-resources/**",
+                        "/webjars/**","/v3/**","/swagger-ui.html/**");
     }
 
     @Bean
