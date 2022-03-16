@@ -5,9 +5,12 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
 import cn.hutool.jwt.JWTUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.silvericekey.cloudstorage.common.Constants;
 import com.silvericekey.cloudstorage.features.user.entity.UserInfo;
+import com.silvericekey.cloudstorage.features.user.service.UserService;
 import jodd.util.StringUtil;
+import lombok.RequiredArgsConstructor;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -47,6 +50,10 @@ public class JWTPackageUtil {
             return false;
         }
         JWT jwt = JWTUtil.parseToken(token);
+        String userId = JWTPackageUtil.fromJwtGetUserId(token);
+        if (StringUtil.isEmpty(userId)){
+            return false;
+        }
         return jwt.setKey(Constants.ENCRYPTKEY.getBytes(StandardCharsets.UTF_8)).verify();
     }
 

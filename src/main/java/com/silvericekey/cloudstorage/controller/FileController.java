@@ -1,6 +1,7 @@
 package com.silvericekey.cloudstorage.controller;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.MD5;
 import com.silvericekey.cloudstorage.base.BaseController;
 import com.silvericekey.cloudstorage.features.file.model.FileUploadVo;
 import com.silvericekey.cloudstorage.features.file.service.FileService;
@@ -38,7 +39,6 @@ public class FileController extends BaseController {
     /**
      * 文件上传，通过判断md5避免重复文件
      *
-     * @param filemd5
      * @param folderId
      * @param multipartFile
      * @return
@@ -46,10 +46,10 @@ public class FileController extends BaseController {
      */
     @PostMapping(path = "/uploadFile")
     public RestResponse uploadFile(@RequestPart(value = "file") MultipartFile multipartFile,
-                                   @RequestPart("filemd5") String filemd5,
-                                   @RequestPart("folderId") Long folderId
+                                   @RequestParam("folderId") Long folderId
     ) throws IOException {
         FileUploadVo fileUploadVo = new FileUploadVo();
+        String filemd5 = MD5.create().digestHex(multipartFile.getInputStream()).toUpperCase();
         fileUploadVo.setFileMD5(filemd5);
         fileUploadVo.setFolderId(folderId);
         fileUploadVo.setUserId(getUser().getId());

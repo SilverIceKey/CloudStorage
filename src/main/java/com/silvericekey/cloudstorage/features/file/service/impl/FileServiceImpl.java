@@ -1,5 +1,6 @@
 package com.silvericekey.cloudstorage.features.file.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,6 +17,7 @@ import com.silvericekey.cloudstorage.util.FileCalcUtil;
 import com.silvericekey.cloudstorage.util.RestUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,15 +59,21 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
         QueryWrapper<FolderInfo> folderInfoQueryWrapper = new QueryWrapper<>();
         folderInfoQueryWrapper.eq(FolderInfo.ID, fileUploadVo.getFolderId());
         FolderInfo folderInfo = folderService.getOne(folderInfoQueryWrapper);
+        if (folderInfo==null){
+            return RestUtil.error("文件夹不存在");
+        }
         if (fileInfo != null) {
-            return RestUtil.ok("极速上传成功", fileInfo);
+            FileInfo tmpFileInfo = new FileInfo();
+            BeanUtil.copyProperties(fileInfo,tmpFileInfo);
+            tmpFileInfo.setFileName(fileUploadVo.getMultipartFile().getOriginalFilename());
+            tmpFileInfo.setUserId(fileUploadVo.getUserId());
+            tmpFileInfo.setFolderId(fileUploadVo.getFolderId());
+            getBaseMapper().insert(tmpFileInfo);
+            return RestUtil.ok("极速上传成功", tmpFileInfo);
         } else {
             OutputStream os = FileUtil.getOutputStream(Constants.FILE_SAVE_PATH + folderInfo.getFolderName() + fileUploadVo.getMultipartFile().getOriginalFilename());
             InputStream is = fileUploadVo.getMultipartFile().getInputStream();
-            int readData = -1;
-            while ((readData = is.read()) != -1) {
-                os.write(readData);
-            }
+            FileCopyUtils.copy(is,os);
             os.close();
             is.close();
             fileInfo = new FileInfo();
