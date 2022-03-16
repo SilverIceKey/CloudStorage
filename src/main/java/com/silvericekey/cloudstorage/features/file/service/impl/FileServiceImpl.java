@@ -133,7 +133,6 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
             return RestUtil.error("文件不存在");
         }
         FileUtil.rename(FileUtil.file(fileInfo.getFilePath()),fileInfo.getFilePath().replace(fileInfo.getFileName(), renameFileVo.getFileName()), true);
-        fileInfo.setFileName(renameFileVo.getFileName());
         fileInfo.setFilePath(fileInfo.getFilePath().replace(fileInfo.getFileName(), renameFileVo.getFileName()));
         fileInfo.setFileDownloadPath(fileInfo.getFileDownloadPath().replace(fileInfo.getFileName(), renameFileVo.getFileName()));
         fileInfo.setFileName(renameFileVo.getFileName());
