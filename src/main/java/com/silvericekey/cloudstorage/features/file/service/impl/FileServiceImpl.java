@@ -75,11 +75,11 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
         }
         moveToPath.deleteCharAt(0);
         if (fileInfo != null) {
-            if (fileInfo.getUserId()==fileUploadVo.getUserId()){
+            if (fileInfo.getUserId() == fileUploadVo.getUserId()) {
                 return RestUtil.ok("文件已存在", fileInfo);
-            }else {
+            } else {
                 FileInfo tmpFileInfo = new FileInfo();
-                BeanUtil.copyProperties(fileInfo, tmpFileInfo,FileInfo.ID);
+                BeanUtil.copyProperties(fileInfo, tmpFileInfo, FileInfo.ID);
                 tmpFileInfo.setFileName(fileUploadVo.getMultipartFile().getOriginalFilename());
                 tmpFileInfo.setUserId(fileUploadVo.getUserId());
                 tmpFileInfo.setFolderId(fileUploadVo.getFolderId());
@@ -99,6 +99,7 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
             fileInfo.setFileSize(fileUploadVo.getMultipartFile().getSize());
             fileInfo.setFileDownloadPath(Constants.URL_PREFIX + moveToPath + fileUploadVo.getMultipartFile().getOriginalFilename());
             fileInfo.setFolderId(fileUploadVo.getFolderId());
+            fileInfo.setFileSizeStr(FileCalcUtil.calcFileSize(fileInfo.getFileSize()));
             fileInfo.setUserId(fileUploadVo.getUserId());
             getBaseMapper().insert(fileInfo);
             return RestUtil.ok("上传成功", fileInfo);
@@ -110,6 +111,9 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
         QueryWrapper<FileInfo> fileInfoQueryWrapper = new QueryWrapper<>();
         fileInfoQueryWrapper.eq(FileInfo.ID, fileId);
         FileInfo queryFile = getBaseMapper().selectOne(fileInfoQueryWrapper);
+        if (queryFile==null){
+            return RestUtil.error("文件不存在");
+        }
         QueryWrapper<FileInfo> sameMD5FilesQuery = new QueryWrapper<>();
         sameMD5FilesQuery.eq(FileInfo.FILE_MD5, queryFile.getFileMD5());
         List<FileInfo> sameMD5Files = getBaseMapper().selectList(sameMD5FilesQuery);
@@ -125,6 +129,13 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
         QueryWrapper<FileInfo> fileInfoQueryWrapper = new QueryWrapper<>();
         fileInfoQueryWrapper.eq(FileInfo.ID, renameFileVo.getFileId());
         FileInfo fileInfo = getBaseMapper().selectOne(fileInfoQueryWrapper);
+        if (fileInfo == null) {
+            return RestUtil.error("文件不存在");
+        }
+        FileUtil.rename(FileUtil.file(fileInfo.getFileName()), renameFileVo.getFileName(), true);
+        fileInfo.setFileName(renameFileVo.getFileName());
+        fileInfo.setFilePath(fileInfo.getFilePath().replace(fileInfo.getFileName(), renameFileVo.getFileName()));
+        fileInfo.setFileDownloadPath(fileInfo.getFileDownloadPath().replace(fileInfo.getFileName(), renameFileVo.getFileName()));
         fileInfo.setFileName(renameFileVo.getFileName());
         getBaseMapper().updateById(fileInfo);
         return RestUtil.ok("修改成功");
@@ -137,6 +148,9 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
             QueryWrapper<FileInfo> fileInfoQueryWrapper = new QueryWrapper<>();
             fileInfoQueryWrapper.eq(FileInfo.ID, moveFilesVo.getFileIds()[i]);
             fileInfoList.add(getBaseMapper().selectOne(fileInfoQueryWrapper));
+        }
+        if (fileInfoList.size() == 0) {
+            return RestUtil.error("文件不存在");
         }
         QueryWrapper<FolderInfo> folderInfoQueryWrapper = new QueryWrapper<>();
         folderInfoQueryWrapper.eq(FolderInfo.ID, moveFilesVo.getFolderId());
