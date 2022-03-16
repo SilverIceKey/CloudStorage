@@ -74,7 +74,7 @@ public class FileController extends BaseController {
      * @param renameFileVo
      * @return
      */
-    @PostMapping(path = "renameFile")
+    @PostMapping(path = "/renameFile")
     public RestResponse renameFile(@RequestBody RenameFileVo renameFileVo){
         return fileService.renameFile(renameFileVo);
     }
@@ -84,7 +84,7 @@ public class FileController extends BaseController {
      * @param moveFilesVo
      * @return
      */
-    @PostMapping(path = "moveFile")
+    @PostMapping(path = "/moveFile")
     public RestResponse moveFiles(@RequestBody MoveFilesVo moveFilesVo){
         return fileService.MoveFiles(moveFilesVo);
     }

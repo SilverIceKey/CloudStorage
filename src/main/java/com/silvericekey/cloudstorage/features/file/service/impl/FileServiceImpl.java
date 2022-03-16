@@ -73,14 +73,19 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
             folderInfo = folderService.getOne(folderInfoQueryWrapper);
             moveToPath.insert(0, folderInfo.getFolderName());
         }
+        moveToPath.deleteCharAt(0);
         if (fileInfo != null) {
-            FileInfo tmpFileInfo = new FileInfo();
-            BeanUtil.copyProperties(fileInfo, tmpFileInfo);
-            tmpFileInfo.setFileName(fileUploadVo.getMultipartFile().getOriginalFilename());
-            tmpFileInfo.setUserId(fileUploadVo.getUserId());
-            tmpFileInfo.setFolderId(fileUploadVo.getFolderId());
-            getBaseMapper().insert(tmpFileInfo);
-            return RestUtil.ok("极速上传成功", tmpFileInfo);
+            if (fileInfo.getUserId()==fileUploadVo.getUserId()){
+                return RestUtil.ok("文件已存在", fileInfo);
+            }else {
+                FileInfo tmpFileInfo = new FileInfo();
+                BeanUtil.copyProperties(fileInfo, tmpFileInfo,FileInfo.ID);
+                tmpFileInfo.setFileName(fileUploadVo.getMultipartFile().getOriginalFilename());
+                tmpFileInfo.setUserId(fileUploadVo.getUserId());
+                tmpFileInfo.setFolderId(fileUploadVo.getFolderId());
+                getBaseMapper().insert(tmpFileInfo);
+                return RestUtil.ok("极速上传成功", tmpFileInfo);
+            }
         } else {
             OutputStream os = FileUtil.getOutputStream(Constants.FILE_SAVE_PATH + moveToPath + fileUploadVo.getMultipartFile().getOriginalFilename());
             InputStream is = fileUploadVo.getMultipartFile().getInputStream();
@@ -143,6 +148,7 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
             folderInfo = folderService.getOne(folderInfoQueryWrapper);
             moveToPath.insert(0, folderInfo.getFolderName());
         }
+        moveToPath.deleteCharAt(0);
         for (int i = 0; i < fileInfoList.size(); i++) {
             File sourceFile = FileUtil.file(fileInfoList.get(i).getFilePath());
             File targetFile = FileUtil.file(Constants.FILE_SAVE_PATH + moveToPath + fileInfoList.get(i).getFileName());

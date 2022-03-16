@@ -24,5 +24,5 @@ public interface FileService extends IService<FileInfo> {
 
     RestResponse renameFile(RenameFileVo renameFileVo);
 
-    RestResponse MoveFiles(MoveFilesVo moveFilesVo) throws IOException;
+    RestResponse MoveFiles(MoveFilesVo moveFilesVo);
 }
