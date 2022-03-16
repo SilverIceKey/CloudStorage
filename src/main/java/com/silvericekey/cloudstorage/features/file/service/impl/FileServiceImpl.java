@@ -8,14 +8,12 @@ import com.silvericekey.cloudstorage.base.RestResponse;
 import com.silvericekey.cloudstorage.common.Constants;
 import com.silvericekey.cloudstorage.features.file.entity.FileInfo;
 import com.silvericekey.cloudstorage.features.file.mapper.FileInfoMapper;
-import com.silvericekey.cloudstorage.features.file.model.FileListVo;
-import com.silvericekey.cloudstorage.features.file.model.FileUploadVo;
-import com.silvericekey.cloudstorage.features.file.model.MoveFilesVo;
-import com.silvericekey.cloudstorage.features.file.model.RenameFileVo;
+import com.silvericekey.cloudstorage.features.file.model.*;
 import com.silvericekey.cloudstorage.features.file.service.FileService;
 import com.silvericekey.cloudstorage.features.folder.entity.FolderInfo;
 import com.silvericekey.cloudstorage.features.folder.service.FolderService;
 import com.silvericekey.cloudstorage.util.FileCalcUtil;
+import com.silvericekey.cloudstorage.util.PathUtils;
 import com.silvericekey.cloudstorage.util.RestUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -66,16 +64,9 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
         if (folderInfo == null) {
             return RestUtil.error("文件夹不存在");
         }
-        StringBuilder moveToPath = new StringBuilder(folderInfo.getFolderName());
-        while (folderInfo.getFolderParentId() != 0) {
-            folderInfoQueryWrapper = new QueryWrapper<>();
-            folderInfoQueryWrapper.eq(FolderInfo.ID, folderInfo.getFolderParentId());
-            folderInfo = folderService.getOne(folderInfoQueryWrapper);
-            moveToPath.insert(0, folderInfo.getFolderName());
-        }
-        moveToPath.deleteCharAt(0);
+        String moveToPath = PathUtils.getPath(folderInfo,folderService);
         if (fileInfo != null) {
-            if (fileInfo.getUserId() == fileUploadVo.getUserId()) {
+            if (fileInfo.getUserId().equals(fileUploadVo.getUserId())) {
                 return RestUtil.ok("文件已存在", fileInfo);
             } else {
                 FileInfo tmpFileInfo = new FileInfo();
@@ -107,21 +98,22 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
     }
 
     @Override
-    public RestResponse deleteFile(String fileId) {
+    public boolean deleteFile(String fileId) {
         QueryWrapper<FileInfo> fileInfoQueryWrapper = new QueryWrapper<>();
         fileInfoQueryWrapper.eq(FileInfo.ID, fileId);
-        FileInfo queryFile = getBaseMapper().selectOne(fileInfoQueryWrapper);
-        if (queryFile==null){
-            return RestUtil.error("文件不存在");
+        FileInfo fileInfo = getBaseMapper().selectOne(fileInfoQueryWrapper);
+        if (fileInfo == null) {
+            return false;
+        } else {
+            QueryWrapper<FileInfo> sameMD5FilesQuery = new QueryWrapper<>();
+            sameMD5FilesQuery.eq(FileInfo.FILE_MD5, fileInfo.getFileMD5());
+            List<FileInfo> sameMD5Files = getBaseMapper().selectList(sameMD5FilesQuery);
+            if (sameMD5Files.size() == 1) {
+                FileUtil.del(fileInfo.getFilePath());
+            }
+            getBaseMapper().deleteById(fileInfo);
         }
-        QueryWrapper<FileInfo> sameMD5FilesQuery = new QueryWrapper<>();
-        sameMD5FilesQuery.eq(FileInfo.FILE_MD5, queryFile.getFileMD5());
-        List<FileInfo> sameMD5Files = getBaseMapper().selectList(sameMD5FilesQuery);
-        if (sameMD5Files.size() == 1) {
-            FileUtil.del(queryFile.getFilePath());
-        }
-        getBaseMapper().deleteById(queryFile);
-        return RestUtil.ok("删除成功");
+        return true;
     }
 
     @Override
@@ -132,7 +124,7 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
         if (fileInfo == null) {
             return RestUtil.error("文件不存在");
         }
-        FileUtil.rename(FileUtil.file(fileInfo.getFilePath()),fileInfo.getFilePath().replace(fileInfo.getFileName(), renameFileVo.getFileName()), true);
+        FileUtil.rename(FileUtil.file(fileInfo.getFilePath()), fileInfo.getFilePath().replace(fileInfo.getFileName(), renameFileVo.getFileName()), true);
         fileInfo.setFilePath(fileInfo.getFilePath().replace(fileInfo.getFileName(), renameFileVo.getFileName()));
         fileInfo.setFileDownloadPath(fileInfo.getFileDownloadPath().replace(fileInfo.getFileName(), renameFileVo.getFileName()));
         fileInfo.setFileName(renameFileVo.getFileName());
@@ -141,35 +133,24 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
     }
 
     @Override
-    public RestResponse MoveFiles(MoveFilesVo moveFilesVo) {
-        List<FileInfo> fileInfoList = new ArrayList<>();
-        for (int i = 0; i < moveFilesVo.getFileIds().length; i++) {
-            QueryWrapper<FileInfo> fileInfoQueryWrapper = new QueryWrapper<>();
-            fileInfoQueryWrapper.eq(FileInfo.ID, moveFilesVo.getFileIds()[i]);
-            fileInfoList.add(getBaseMapper().selectOne(fileInfoQueryWrapper));
-        }
-        if (fileInfoList.size() == 0) {
-            return RestUtil.error("文件不存在");
+    public boolean MoveFile(MoveFileVo moveFilesVo) {
+        QueryWrapper<FileInfo> fileInfoQueryWrapper = new QueryWrapper<>();
+        fileInfoQueryWrapper.eq(FileInfo.ID, moveFilesVo.getFileId());
+        FileInfo fileInfo = getBaseMapper().selectOne(fileInfoQueryWrapper);
+        if (fileInfo == null) {
+            return false;
         }
         QueryWrapper<FolderInfo> folderInfoQueryWrapper = new QueryWrapper<>();
         folderInfoQueryWrapper.eq(FolderInfo.ID, moveFilesVo.getFolderId());
         FolderInfo folderInfo = folderService.getOne(folderInfoQueryWrapper);
-        StringBuilder moveToPath = new StringBuilder(folderInfo.getFolderName());
-        while (folderInfo.getFolderParentId() != 0) {
-            folderInfoQueryWrapper = new QueryWrapper<>();
-            folderInfoQueryWrapper.eq(FolderInfo.ID, folderInfo.getFolderParentId());
-            folderInfo = folderService.getOne(folderInfoQueryWrapper);
-            moveToPath.insert(0, folderInfo.getFolderName());
-        }
-        moveToPath.deleteCharAt(0);
-        for (int i = 0; i < fileInfoList.size(); i++) {
-            File sourceFile = FileUtil.file(fileInfoList.get(i).getFilePath());
-            File targetFile = FileUtil.file(Constants.FILE_SAVE_PATH + moveToPath + fileInfoList.get(i).getFileName());
-            FileUtil.move(sourceFile, targetFile, true);
-            fileInfoList.get(i).setFilePath(targetFile.getAbsolutePath());
-            fileInfoList.get(i).setFileDownloadPath(Constants.URL_PREFIX + targetFile.getAbsolutePath());
-            getBaseMapper().updateById(fileInfoList.get(i));
-        }
-        return RestUtil.ok("移动成功");
+        String moveToPath = PathUtils.getPath(folderInfo,folderService);
+        File sourceFile = FileUtil.file(fileInfo.getFilePath());
+        File targetFile = FileUtil.file(Constants.FILE_SAVE_PATH + moveToPath + fileInfo.getFileName());
+        FileUtil.move(sourceFile, targetFile, true);
+        fileInfo.setFilePath(targetFile.getAbsolutePath());
+        fileInfo.setFileDownloadPath(Constants.URL_PREFIX + targetFile.getAbsolutePath());
+        fileInfo.setFolderId(moveFilesVo.getFolderId());
+        getBaseMapper().updateById(fileInfo);
+        return true;
     }
 }

@@ -56,7 +56,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserInfo> implement
             getBaseMapper().insert(user);
             UserInfo insertUser = getBaseMapper().selectOne(userWrapper);
             FolderInfo folderInfo = new FolderInfo();
-            folderInfo.setFolderName("/");
+            folderInfo.setFolderName("/"+user.getUsername());
             folderInfo.setFolderParentId(0L);
             folderInfo.setUserId(insertUser.getId());
             folderService.getBaseMapper().insert(folderInfo);

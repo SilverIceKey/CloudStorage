@@ -3,10 +3,7 @@ package com.silvericekey.cloudstorage.features.file.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.silvericekey.cloudstorage.base.RestResponse;
 import com.silvericekey.cloudstorage.features.file.entity.FileInfo;
-import com.silvericekey.cloudstorage.features.file.model.FileListVo;
-import com.silvericekey.cloudstorage.features.file.model.FileUploadVo;
-import com.silvericekey.cloudstorage.features.file.model.MoveFilesVo;
-import com.silvericekey.cloudstorage.features.file.model.RenameFileVo;
+import com.silvericekey.cloudstorage.features.file.model.*;
 
 import java.io.IOException;
 
@@ -20,9 +17,9 @@ public interface FileService extends IService<FileInfo> {
 
     RestResponse uploadFile(FileUploadVo fileUploadVo) throws IOException;
 
-    RestResponse deleteFile(String fileId);
+    boolean deleteFile(String fileId);
 
     RestResponse renameFile(RenameFileVo renameFileVo);
 
-    RestResponse MoveFiles(MoveFilesVo moveFilesVo);
+    boolean MoveFile(MoveFileVo moveFilesVo);
 }
