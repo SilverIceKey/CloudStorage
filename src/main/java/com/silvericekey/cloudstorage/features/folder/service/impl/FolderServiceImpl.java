@@ -10,14 +10,12 @@ import com.silvericekey.cloudstorage.features.folder.entity.FolderInfo;
 import com.silvericekey.cloudstorage.features.folder.mapper.FolderInfoMapper;
 import com.silvericekey.cloudstorage.features.folder.model.CreateFolderVo;
 import com.silvericekey.cloudstorage.features.folder.model.MoveFolderVo;
-import com.silvericekey.cloudstorage.features.folder.model.MoveFoldersVo;
 import com.silvericekey.cloudstorage.features.folder.model.RenameFolderVo;
 import com.silvericekey.cloudstorage.features.folder.service.FolderService;
 import com.silvericekey.cloudstorage.util.PathUtils;
 import com.silvericekey.cloudstorage.util.RestUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.nio.file.Paths;
 import java.util.List;
@@ -30,7 +28,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class FolderServiceImpl extends ServiceImpl<FolderInfoMapper, FolderInfo> implements FolderService {
-    private final FileService fileService;
 
     @Override
     public RestResponse createFolder(CreateFolderVo createFolderVo) {
@@ -51,7 +48,7 @@ public class FolderServiceImpl extends ServiceImpl<FolderInfoMapper, FolderInfo>
     }
 
     @Override
-    public boolean moveFolder(MoveFolderVo moveFolderVo) {
+    public boolean moveFolder(MoveFolderVo moveFolderVo, FileService fileService) {
         QueryWrapper<FolderInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(FolderInfo.ID, moveFolderVo.getFolderId());
         FolderInfo folderInfo = getBaseMapper().selectOne(queryWrapper);
@@ -82,7 +79,7 @@ public class FolderServiceImpl extends ServiceImpl<FolderInfoMapper, FolderInfo>
     }
 
     @Override
-    public RestResponse renameFolder(RenameFolderVo renameFolderVo) {
+    public RestResponse renameFolder(RenameFolderVo renameFolderVo,FileService fileService) {
         QueryWrapper<FolderInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(FolderInfo.ID, renameFolderVo.getFolderId());
         FolderInfo folderInfo = getBaseMapper().selectOne(queryWrapper);
@@ -106,7 +103,7 @@ public class FolderServiceImpl extends ServiceImpl<FolderInfoMapper, FolderInfo>
     }
 
     @Override
-    public boolean deleteFolder(String folderId) {
+    public boolean deleteFolder(String folderId,FileService fileService) {
         QueryWrapper<FolderInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(FolderInfo.ID, folderId);
         FolderInfo folderInfo = getBaseMapper().selectOne(queryWrapper);

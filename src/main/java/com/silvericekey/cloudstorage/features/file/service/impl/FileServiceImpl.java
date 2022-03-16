@@ -8,7 +8,10 @@ import com.silvericekey.cloudstorage.base.RestResponse;
 import com.silvericekey.cloudstorage.common.Constants;
 import com.silvericekey.cloudstorage.features.file.entity.FileInfo;
 import com.silvericekey.cloudstorage.features.file.mapper.FileInfoMapper;
-import com.silvericekey.cloudstorage.features.file.model.*;
+import com.silvericekey.cloudstorage.features.file.model.FileListVo;
+import com.silvericekey.cloudstorage.features.file.model.FileUploadVo;
+import com.silvericekey.cloudstorage.features.file.model.MoveFileVo;
+import com.silvericekey.cloudstorage.features.file.model.RenameFileVo;
 import com.silvericekey.cloudstorage.features.file.service.FileService;
 import com.silvericekey.cloudstorage.features.folder.entity.FolderInfo;
 import com.silvericekey.cloudstorage.features.folder.service.FolderService;
@@ -23,7 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,10 +37,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> implements FileService {
-    private final FolderService folderService;
 
     @Override
-    public RestResponse getFileList(FileListVo fileListVo) {
+    public RestResponse getFileList(FileListVo fileListVo, FolderService folderService) {
         QueryWrapper<FileInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(FileInfo.USER_ID, fileListVo.getUserId());
         queryWrapper.eq(FileInfo.FOLDER_ID, fileListVo.getFolderId());
@@ -54,7 +55,7 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
     }
 
     @Override
-    public RestResponse uploadFile(FileUploadVo fileUploadVo) throws IOException {
+    public RestResponse uploadFile(FileUploadVo fileUploadVo, FolderService folderService) throws IOException {
         QueryWrapper<FileInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(FileInfo.FILE_MD5, fileUploadVo.getFileMD5().toUpperCase());
         FileInfo fileInfo = getBaseMapper().selectOne(queryWrapper);
@@ -133,7 +134,7 @@ public class FileServiceImpl extends ServiceImpl<FileInfoMapper, FileInfo> imple
     }
 
     @Override
-    public boolean MoveFile(MoveFileVo moveFilesVo) {
+    public boolean MoveFile(MoveFileVo moveFilesVo,FolderService folderService) {
         QueryWrapper<FileInfo> fileInfoQueryWrapper = new QueryWrapper<>();
         fileInfoQueryWrapper.eq(FileInfo.ID, moveFilesVo.getFileId());
         FileInfo fileInfo = getBaseMapper().selectOne(fileInfoQueryWrapper);
