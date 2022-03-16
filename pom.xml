@@ -91,7 +91,7 @@
 
     <build>
         <finalName>CloudStorage</finalName>
-        <defaultGoal>package</defaultGoal>
+        <defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
