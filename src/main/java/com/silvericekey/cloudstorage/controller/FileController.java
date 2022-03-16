@@ -4,6 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.MD5;
 import com.silvericekey.cloudstorage.base.BaseController;
 import com.silvericekey.cloudstorage.features.file.model.FileUploadVo;
+import com.silvericekey.cloudstorage.features.file.model.MoveFilesVo;
+import com.silvericekey.cloudstorage.features.file.model.RenameFileVo;
 import com.silvericekey.cloudstorage.features.file.service.FileService;
 import com.silvericekey.cloudstorage.features.file.model.FileListVo;
 import com.silvericekey.cloudstorage.base.RestResponse;
@@ -55,5 +57,35 @@ public class FileController extends BaseController {
         fileUploadVo.setUserId(getUser().getId());
         fileUploadVo.setMultipartFile(multipartFile);
         return fileService.uploadFile(fileUploadVo);
+    }
+
+    /**
+     * 删除文件，数据直接删除，不使用逻辑删除
+     * @param fileId
+     * @return
+     */
+    @GetMapping(path = "/deleteFile")
+    public RestResponse deleteFile(String fileId){
+        return fileService.deleteFile(fileId);
+    }
+
+    /**
+     * 文件重命名
+     * @param renameFileVo
+     * @return
+     */
+    @PostMapping(path = "renameFile")
+    public RestResponse renameFile(@RequestBody RenameFileVo renameFileVo){
+        return fileService.renameFile(renameFileVo);
+    }
+
+    /**
+     * 移动文件
+     * @param moveFilesVo
+     * @return
+     */
+    @PostMapping(path = "moveFile")
+    public RestResponse moveFiles(@RequestBody MoveFilesVo moveFilesVo){
+        return fileService.MoveFiles(moveFilesVo);
     }
 }
