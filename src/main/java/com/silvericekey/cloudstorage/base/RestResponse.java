@@ -1,5 +1,7 @@
 package com.silvericekey.cloudstorage.base;
 
+import com.silvericekey.cloudstorage.common.ErrorCode;
+import com.silvericekey.cloudstorage.util.RestUtil;
 import lombok.Data;
 
 /**
@@ -21,4 +23,12 @@ public class RestResponse {
      * 携带数据
      */
     private Object data;
+
+    /**
+     * 是否成功
+     * @return
+     */
+    public boolean isOk(){
+        return code == ErrorCode.OK;
+    }
 }
