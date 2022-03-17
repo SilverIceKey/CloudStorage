@@ -17,4 +17,6 @@ public interface UserService extends IService<UserInfo> {
     RestResponse register(RegisterVo registerVo);
 
     RestResponse changePassword(UserVo userVo);
+
+    RestResponse updateToken(String userId);
 }

@@ -80,4 +80,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserInfo> implement
         }
     }
 
+    @Override
+    public RestResponse updateToken(String userId) {
+        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(UserInfo.ID, userId);
+        UserInfo userInfo = this.getOne(queryWrapper);
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setToken(JWTPackageUtil.createJWT(userInfo));
+        return RestUtil.ok(loginResponse);
+    }
+
 }

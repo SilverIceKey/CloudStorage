@@ -7,10 +7,7 @@ import com.silvericekey.cloudstorage.features.user.model.UserVo;
 import com.silvericekey.cloudstorage.features.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author SilverIceKey
@@ -31,6 +28,15 @@ public class UserController extends BaseController {
     @PostMapping(path = "/login")
     public RestResponse login(@RequestBody UserVo userVo) {
         return userService.login(userVo);
+    }
+
+    /**
+     * 更新token
+     * @return
+     */
+    @GetMapping(path = "/updateToken")
+    public RestResponse updateToken(){
+        return userService.updateToken(getUser().getId()+"");
     }
 
     /**
