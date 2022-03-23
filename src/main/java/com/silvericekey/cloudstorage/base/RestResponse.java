@@ -1,5 +1,6 @@
 package com.silvericekey.cloudstorage.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.silvericekey.cloudstorage.common.ErrorCode;
 import com.silvericekey.cloudstorage.util.RestUtil;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class RestResponse {
      * 是否成功
      * @return
      */
+    @JsonIgnore
     public boolean isOk(){
         return code == ErrorCode.OK;
     }
