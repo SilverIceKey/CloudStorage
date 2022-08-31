@@ -15,11 +15,34 @@ import com.silvericekey.cloudstorage.features.folder.model.RenameFolderVo;
  * @date 2022/3/1513:06
  */
 public interface FolderService extends IService<FolderInfo> {
+    /**
+     * 创建文件夹
+     * @param createFolderVo
+     * @return
+     */
     RestResponse createFolder(CreateFolderVo createFolderVo);
 
+    /**
+     * 移动文件夹
+     * @param moveFolderVo
+     * @param fileService
+     * @return
+     */
     boolean moveFolder(MoveFolderVo moveFolderVo, FileService fileService);
 
+    /**
+     * 重命名文件夹
+     * @param renameFolderVo
+     * @param fileService
+     * @return
+     */
     RestResponse renameFolder(RenameFolderVo renameFolderVo, FileService fileService);
 
+    /**
+     * 删除文件夹
+     * @param folderId
+     * @param fileService
+     * @return
+     */
     boolean deleteFolder(String folderId, FileService fileService);
 }
